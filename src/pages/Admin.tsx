@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -12,9 +13,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Package, Users, DollarSign, TrendingUp, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Admin = () => {
+  const { isAdmin, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Redirect if not admin
+  if (!isAuthenticated || !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleAddProduct = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

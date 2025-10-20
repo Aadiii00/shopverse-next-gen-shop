@@ -9,17 +9,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockProducts } from "@/lib/mockData";
 import { Star, ShoppingCart, Heart, Share2, Truck, Shield, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = mockProducts.find(p => p.id === id);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
   const handleAddToCart = () => {
+    addToCart(product, quantity);
     toast.success(`Added ${quantity} ${product.name} to cart!`);
   };
 

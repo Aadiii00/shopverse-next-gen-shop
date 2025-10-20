@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Sun, Moon, Search } from "lucide-react";
+import { ShoppingCart, User, Menu, X, Sun, Moon, Search, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { motion } from "framer-motion";
 import { CartDrawer } from "./CartDrawer";
 import { AuthModal } from "./AuthModal";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const { user, logout, isAdmin } = useAuth();
 
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle("dark");
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
   };
 
   return (
@@ -45,6 +53,11 @@ export const Navbar = () => {
             <Link to="/deals" className="text-foreground hover:text-primary transition-colors">
               Deals
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-primary transition-colors">
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* Right Actions */}
@@ -55,9 +68,20 @@ export const Navbar = () => {
             <Button variant="ghost" size="icon" onClick={toggleTheme}>
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Button variant="ghost" size="icon" onClick={() => setAuthOpen(true)}>
-              <User className="h-5 w-5" />
-            </Button>
+            {user ? (
+              <>
+                <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+                  Welcome, {user.name}
+                </div>
+                <Button variant="ghost" size="icon" onClick={handleLogout}>
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : (
+              <Button variant="ghost" size="icon" onClick={() => setAuthOpen(true)}>
+                <User className="h-5 w-5" />
+              </Button>
+            )}
             <CartDrawer />
 
             {/* Mobile Menu */}

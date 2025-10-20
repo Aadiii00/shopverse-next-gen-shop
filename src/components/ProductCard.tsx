@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/lib/mockData";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -11,9 +13,16 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
+  const { addToCart } = useCart();
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart(product);
+    toast.success(`${product.name} added to cart!`);
+  };
 
   return (
     <motion.div
@@ -49,7 +58,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
               whileHover={{ opacity: 1, y: 0 }}
               className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <Button className="w-full" size="sm">
+              <Button className="w-full" size="sm" onClick={handleAddToCart}>
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Add to Cart
               </Button>
