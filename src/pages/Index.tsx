@@ -1,12 +1,22 @@
 import { motion } from "framer-motion";
 import { ShoppingBag, TrendingUp, Shield, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ProductCard } from "@/components/ProductCard";
+import { mockProducts } from "@/lib/mockData";
+import { Link } from "react-router-dom";
 
 const Index = () => {
+  const featuredProducts = mockProducts.filter(p => p.featured);
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-hero-gradient py-20 px-4">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-hero-gradient py-20 px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -20,9 +30,11 @@ const Index = () => {
             Discover amazing products at unbeatable prices. Your shopping journey starts here.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button size="lg" variant="secondary">
-              Shop Now
-            </Button>
+            <Link to="/products">
+              <Button size="lg" variant="secondary">
+                Shop Now
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
               Learn More
             </Button>
@@ -53,6 +65,37 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* Featured Products */}
+      <section className="py-16 px-4 bg-background">
+        <div className="container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold mb-4">Featured Products</h2>
+            <p className="text-muted-foreground text-lg">
+              Check out our handpicked selection of trending items
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/products">
+              <Button size="lg">View All Products</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+      </main>
+
+      <Footer />
     </div>
   );
 };
