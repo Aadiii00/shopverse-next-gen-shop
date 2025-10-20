@@ -58,6 +58,11 @@ export const Navbar = () => {
                 Admin
               </Link>
             )}
+            {user && (
+              <Link to="/orders" className="text-foreground hover:text-primary transition-colors">
+                My Orders
+              </Link>
+            )}
           </div>
 
           {/* Right Actions */}

@@ -106,8 +106,8 @@ export const CartDrawer = () => {
                 </div>
               </div>
               
-              <Button className="w-full" size="lg">
-                Proceed to Checkout
+              <Button className="w-full" size="lg" asChild>
+                <a href="/checkout">Proceed to Checkout</a>
               </Button>
             </div>
           )}

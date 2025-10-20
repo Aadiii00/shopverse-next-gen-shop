@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
 
 interface User {
   id: string;
@@ -20,60 +22,74 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('shopverse_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        if (session?.user) {
+          setUser({
+            id: session.user.id,
+            email: session.user.email || '',
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+            role: session.user.email?.includes('admin') ? 'admin' : 'user'
+          });
+        } else {
+          setUser(null);
+        }
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+          role: session.user.email?.includes('admin') ? 'admin' : 'user'
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
-    // TODO: Replace with actual API call to your backend
-    // const response = await fetch('YOUR_BACKEND_URL/api/auth/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email, password })
-    // });
-    
-    // Mock implementation for demo
-    const mockUser: User = {
-      id: '1',
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      name: email.split('@')[0],
-      role: email.includes('admin') ? 'admin' : 'user'
-    };
+      password
+    });
     
-    setUser(mockUser);
-    localStorage.setItem('shopverse_user', JSON.stringify(mockUser));
-    localStorage.setItem('shopverse_token', 'mock_token_' + Date.now());
+    if (error) {
+      throw new Error(error.message);
+    }
   };
 
   const register = async (name: string, email: string, password: string) => {
-    // TODO: Replace with actual API call to your backend
-    // const response = await fetch('YOUR_BACKEND_URL/api/auth/register', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ name, email, password })
-    // });
-    
-    // Mock implementation for demo
-    const mockUser: User = {
-      id: Date.now().toString(),
+    const { error } = await supabase.auth.signUp({
       email,
-      name,
-      role: 'user'
-    };
+      password,
+      options: {
+        data: {
+          name
+        },
+        emailRedirectTo: `${window.location.origin}/`
+      }
+    });
     
-    setUser(mockUser);
-    localStorage.setItem('shopverse_user', JSON.stringify(mockUser));
-    localStorage.setItem('shopverse_token', 'mock_token_' + Date.now());
+    if (error) {
+      throw new Error(error.message);
+    }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem('shopverse_user');
-    localStorage.removeItem('shopverse_token');
+    setSession(null);
   };
 
   return (
