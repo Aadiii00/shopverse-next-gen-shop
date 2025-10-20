@@ -28,9 +28,9 @@ export const CartDrawer = () => {
           <SheetTitle className="text-2xl">Shopping Cart</SheetTitle>
         </SheetHeader>
 
-        <div className="flex flex-col h-full mt-6">
+        <div className="flex flex-col h-[calc(100vh-8rem)] mt-6">
           {/* Cart Items */}
-          <div className="flex-1 overflow-y-auto space-y-4">
+          <div className="flex-1 overflow-y-auto space-y-4 pb-4">
             <AnimatePresence>
               {items.map((item) => (
                 <motion.div
@@ -91,7 +91,7 @@ export const CartDrawer = () => {
 
           {/* Checkout Summary */}
           {items.length > 0 && (
-            <div className="border-t pt-4 space-y-4">
+            <div className="border-t pt-4 space-y-4 mt-auto bg-background">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
