@@ -60,8 +60,42 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 Shopverse. All rights reserved.</p>
+        <div className="border-t mt-8 pt-8 space-y-4">
+          <div className="text-center">
+            <p className="text-muted-foreground mb-2">Designed & Developed by</p>
+            <p className="font-semibold text-lg bg-primary-gradient bg-clip-text text-transparent mb-3">
+              [Your Name]
+            </p>
+            <div className="flex gap-4 justify-center">
+              <a 
+                href="[Your LinkedIn URL]" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a 
+                href="[Your GitHub URL]" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                GitHub
+              </a>
+              <a 
+                href="[Your Portfolio URL]" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                Portfolio
+              </a>
+            </div>
+          </div>
+          <div className="text-center text-muted-foreground text-sm">
+            <p>&copy; 2024 Shopverse. All rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>
