@@ -63,6 +63,11 @@ export const Navbar = () => {
                 My Orders
               </Link>
             )}
+            {user && (
+              <Link to="/profile" className="text-foreground hover:text-primary transition-colors">
+                Profile
+              </Link>
+            )}
           </div>
 
           {/* Right Actions */}
@@ -110,6 +115,16 @@ export const Navbar = () => {
                   <Link to="/deals" className="text-lg hover:text-primary transition-colors">
                     Deals
                   </Link>
+                  {user && (
+                    <>
+                      <Link to="/orders" className="text-lg hover:text-primary transition-colors">
+                        My Orders
+                      </Link>
+                      <Link to="/profile" className="text-lg hover:text-primary transition-colors">
+                        Profile
+                      </Link>
+                    </>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
