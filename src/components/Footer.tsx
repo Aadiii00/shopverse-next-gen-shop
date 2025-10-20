@@ -64,11 +64,11 @@ export const Footer = () => {
           <div className="text-center">
             <p className="text-muted-foreground mb-2">Designed & Developed by</p>
             <p className="font-semibold text-lg bg-primary-gradient bg-clip-text text-transparent mb-3">
-              [Your Name]
+              [Aditya B P]
             </p>
             <div className="flex gap-4 justify-center">
               <a 
-                href="[Your LinkedIn URL]" 
+                href="https://www.linkedin.com/in/aditya-b-p?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bc5K5InDERziS1vL2Zes2aA%3D%3D" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -76,7 +76,7 @@ export const Footer = () => {
                 LinkedIn
               </a>
               <a 
-                href="[Your GitHub URL]" 
+                href="https://github.com/Aadiii00" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
