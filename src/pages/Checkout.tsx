@@ -45,7 +45,10 @@ const Checkout = () => {
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error("Order creation error:", orderError);
+        throw new Error(orderError.message);
+      }
 
       // Create order items
       const orderItems = items.map(item => ({
@@ -61,7 +64,10 @@ const Checkout = () => {
         .from("order_items")
         .insert(orderItems);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error("Order items error:", itemsError);
+        throw new Error(itemsError.message);
+      }
 
       // Clear cart and show success
       clearCart();

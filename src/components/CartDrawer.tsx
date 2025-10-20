@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, X, Plus, Minus } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { Link } from "react-router-dom";
 
 export const CartDrawer = () => {
   const { items, updateQuantity, removeFromCart, total, itemCount } = useCart();
@@ -54,7 +55,7 @@ export const CartDrawer = () => {
                         variant="outline"
                         size="icon"
                         className="h-7 w-7"
-                        onClick={() => updateQuantity(item.id, -1)}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
@@ -63,7 +64,7 @@ export const CartDrawer = () => {
                         variant="outline"
                         size="icon"
                         className="h-7 w-7"
-                        onClick={() => updateQuantity(item.id, 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
@@ -107,7 +108,7 @@ export const CartDrawer = () => {
               </div>
               
               <Button className="w-full" size="lg" asChild>
-                <a href="/checkout">Proceed to Checkout</a>
+                <Link to="/checkout">Proceed to Checkout</Link>
               </Button>
             </div>
           )}
